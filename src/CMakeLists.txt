@@ -22,6 +22,7 @@ target_sources(${PROJECT_NAME}
         # JUMAKE_SOURCES_BEGIN
         PluginEditor.cpp
         PluginProcessor.cpp
+        DistSliderComponent.cpp
         # JUMAKE_SOURCES_END
 )
 

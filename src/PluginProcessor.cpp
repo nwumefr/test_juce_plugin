@@ -2,15 +2,38 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-AudioPluginAudioProcessor::AudioPluginAudioProcessor()
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+AudioPluginAudioProcessor::
+AudioPluginAudioProcessor()
+
+    : AudioProcessor(
+        BusesProperties()
+            .withInput(
+                "Input",
+                juce::AudioChannelSet
+                    ::stereo(),
+                true)
+
+            .withOutput(
+                "Output",
+                juce::AudioChannelSet
+                    ::stereo(),
+                true)),
+
+      apvts(
+          *this,
+          nullptr,
+          "PARAMETERS",
+          {
+              std::make_unique<
+                  juce::AudioParameterFloat>(
+                  "drive",
+                  "Drive",
+
+                  1.0f,
+                  20.0f,
+
+                  2.0f)
+          })
 {
 }
 
@@ -145,6 +168,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    float drive = *apvts.getRawParameterValue("drive");
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -152,7 +176,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         // ..do something to the data...
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
             {
-                channelData[sample] = std::tanh(channelData[sample] * 4.0f);
+                channelData[sample] = std::tanh(channelData[sample] * drive);
             }
     }
 }

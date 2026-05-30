@@ -4,13 +4,30 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p)
-{
-    juce::ignoreUnused (processorRef);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (700, 700);
-}
-
+    {
+        addAndMakeVisible(
+            driveSlider);
+    
+        driveSlider.setSliderStyle(
+            juce::Slider
+                ::RotaryHorizontalVerticalDrag);
+    
+        driveSlider.setTextBoxStyle(
+            juce::Slider
+                ::TextBoxBelow,
+            false,
+            60,
+            20);
+    
+        driveAttachment =
+            std::make_unique<
+                SliderAttachment>(
+                processorRef.apvts,
+                "drive",
+                driveSlider);
+    
+        setSize(300, 200);
+    }
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
 }
