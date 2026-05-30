@@ -26,7 +26,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
                 "drive",
                 driveSlider);
     
-        setSize(300, 200);
+        setSize(500, 500);
     }
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
@@ -47,4 +47,9 @@ void AudioPluginAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    driveSlider.setBounds(
+            100,
+            40,
+            100,
+            100);
 }
